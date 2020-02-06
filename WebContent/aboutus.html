@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>判断移动设备手持方向</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css">
+		<!-- 引入 jQuery 库 -->
+		<script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+		<!-- 引入 jQuery Mobile 库 -->
+		<script src="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).on("pageinit", function(event) {
+				$(window).on("orientationchange", function(event) {
+					if (event.orientation == "landscape") { //判断当前屏幕方向是否是水平方向
+						$("#msg").text("现在是水平模式！"); //为元素赋予文本内容
+						$("#page1").css("background-color", "#004485"); //改变元素背景颜色
+						$("#page1").css("color", "#CCFFFF"); //改变元素文本颜色
+					}
+					if (event.orientation == "portrait") { //判断当前屏幕方向是否是垂直方向
+						$("#msg").text("现在是垂直模式！"); //为元素赋予文本内容
+						$("#page1").css("background-color", "#F4F4F4"); //改变元素背景颜色
+						$("#page1").css("color", "#333"); //改变元素文本颜色
+					}
+				});
+			})
+		</script>
+		<style>
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+
+			#page1 {
+				background-color: #F4F4F4;
+				color: #333;
+				text-shadow: none;
+			}
+
+			.bar01 {
+				background-color: #fff !important;
+				font-size: 0.8em !important;
+			}
+
+			#btn {
+				position: absolute;
+				width: 2em;
+				height: 1.25em;
+				left: 1em;
+				top: 2em;
+			}
+
+			.ui-content {
+				margin: 0px;
+				padding: 0px;
+			}
+
+			#banner {
+				width: 100%;
+				height: auto;
+				overflow: hidden;
+			}
+
+			#banner img {
+				width: 100%;
+				height: auto;
+			}
+
+			#main {
+				padding: 1em;
+				height: auto;
+				overflow: hidden;
+				font-family: 微软雅黑;
+				font-size: 1em;
+			}
+
+			#main h3 {
+				font-size: 1.2em;
+			}
+
+			#main p {
+				text-indent: 2em;
+				padding: 1em 0 1em 0;
+			}
+
+			#msg {
+				display: block;
+				text-align: center;
+				background-color: rgba(0, 0, 0, 0.4);
+				font-size: 1em;
+				color: #FFF;
+				line-height: 1.5em;
+				margin: 1em 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="page1" data-role="page">
+			<div data-role="header" class="bar01">
+				<div id="btn"><img src="images/182502.png" alt=""></div>
+				<h1><img src="images/182501.png" alt=""></h1>
+			</div>
+			<div data-role="content">
+				<div id="msg"></div>
+				<div id="banner"><img src="images/182503.jpg" alt=""></div>
+				<div id="main">
+					<h3>关于我们</h3>
+					<p>我们是专业从事互联网相关业务开发的设计工作室。专门提供全方位的优质服务和最专业的网站建设方案为企业打造全新电子商务平台。本工作室成立于1999年，已经成为国内著名的网站建设提供商。八年的风雨历程已成功的为中国教育部、中国文化部、国有资监督管理委员会......</p>
+					<h3>我们的团队</h3>
+					<p>成员都具有多年的实际设计工作经验，更好的满足客户的国际化需求。设计师由正规美院毕业，创意的思维模式，高超的设计技能，为您提供最适合您的设计方案。</p>
+					<h3>我们的承诺</h3>
+					<p>本工作室设计与制作的网站均属原创、不套用网上的任何模板，根据每个公司的行点，设计出属于客户.....</p>
+					<p><em>更多>></em></p>
+				</div>
+			</div>
+			<div data-role="footer" class="bar01">
+				<h4>CopyRight &copy; 2017 设计工作室</h4>
+			</div>
+		</div>
+	</body>
+</html>
