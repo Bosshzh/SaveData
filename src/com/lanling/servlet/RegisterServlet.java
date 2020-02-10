@@ -25,6 +25,7 @@ public class RegisterServlet extends HttpServlet {
 		String password = req.getParameter("password");//获取到密码
 		String[] photos = {"/images/xusong1.png","/images/xusong2.jpg","/images/xusong3.jpg",
 				"/images/xusong4.jpg","/images/xusong5.jpeg","/images/xusong6.jpg","/images/xusong7.jpg"};
+		String userphoto = photos[(int)(Math.random()*7)];
 		Statement statement = null;
 		PrintWriter out = resp.getWriter();
 		if(connection != null) {
@@ -34,10 +35,10 @@ public class RegisterServlet extends HttpServlet {
 				int index = 0;
 				if (!rs.next()) {
 					//没有查找到，说明用户表中没有此用户
-					index = statement.executeUpdate("insert into user(username,password,photo) values('"+username+"','"+password+"','"+photos[(int)(Math.random()*7)]+"');");//执行插入操作
+					index = statement.executeUpdate("insert into user(username,password,photo) values('"+username+"','"+password+"','"+userphoto+"');");//执行插入操作
 				}
 				if(index != 0) {
-					out.write("0");//注册成功
+					out.write("0&http://www.zhengzhoudaxue.cn:8080"+userphoto);//注册成功
 				}else {
 					out.write("1");//注册失败，可能该账号已经被注册过了
 				}

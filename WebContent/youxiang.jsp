@@ -18,8 +18,9 @@
 <body>
 	
 	<%
-		String openid = request.getParameter("openid");
-		if(YouXiangUtil.isbangding(openid)){
+		String username = request.getParameter("username");//拿到用户编号
+		String openid = request.getParameter("openid");//拿到openid
+		if(YouXiangUtil.isbangding(username,openid)){
 			//如果已经绑定邮箱了的话
 	%>
 			<h1 align="center">对不起，您已经绑定了邮箱</h1>
@@ -27,45 +28,46 @@
 		}else{
 	%>
 			<div data-role="main" class="ui-content">
-        <form id="youxiang_form" method="post" action="youxiang" data-ajax="false">
-            <div class="ui-field-contain">
-            	<input type="hidden" value="<%=openid%>" name="openid"/>
-				<label for="email">邮箱:</label>
-				<%
-					String value = "";
-					if(!"0".equals(request.getParameter("email"))){
-						value = request.getParameter("email");
-					}
-				%>
-				<input type="email" name="email" id="youxiang_email" placeholder="请输入邮箱" value="<%=value %>">
-				<span id="youxiang_span" ></span><br/>
-                <%
-                	if(session.getAttribute("verification") == null){
-                %>
-                		<input type="button" value="获取验证码" onclick="check();">
-                <%
-                	}else{
-                %>
-                		<input type="button" value="获取验证码" disabled="disabled">
-                <%
-                	}
-                %>
-				<label for="verification">验证码:</label>
-				<input type="text" name="verification" id="verification"><br>
-				<%
-                	if(session.getAttribute("verification") == null){
-                %>
-                		<input type="button" value="绑定邮箱" disabled="disabled">
-                <%
-                	}else{
-                %>
-                		<input type="button" value="绑定邮箱" onclick="check();">
-                <%
-                	}
-                %>
-                
-            </div>
-        </form>
+	        <form id="youxiang_form" method="post" action="youxiang" data-ajax="false">
+	            <div class="ui-field-contain">
+	            	<input type="hidden" value="<%=username%>" name="username">
+	            	<input type="hidden" value="<%=openid%>" name="openid"/>
+					<label for="email">邮箱:</label>
+					<%
+						String value = "";
+						if(request.getParameter("email") != null){
+							value = request.getParameter("email");
+						}
+					%>
+					<input type="email" name="email" id="youxiang_email" placeholder="请输入邮箱" value="<%=value %>">
+					<span id="youxiang_span" ></span><br/>
+	                <%
+	                	if(session.getAttribute("verification") == null){
+	                %>
+	                		<input type="button" value="获取验证码" onclick="check();">
+	                <%
+	                	}else{
+	                %>
+	                		<input type="button" value="获取验证码" disabled="disabled">
+	                <%
+	                	}
+	                %>
+					<label for="verification">验证码:</label>
+					<input type="text" name="verification" id="verification"><br>
+					<%
+	                	if(session.getAttribute("verification") == null){
+	                %>
+	                		<input type="button" value="绑定邮箱" disabled="disabled">
+	                <%
+	                	}else{
+	                %>
+	                		<input type="button" value="绑定邮箱" onclick="check();">
+	                <%
+	                	}
+	                %>
+	                
+	            </div>
+	        </form>
         <script type="text/javascript">
         	function check(){
         		var youxiang_form = document.getElementById("youxiang_form");

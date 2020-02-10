@@ -32,10 +32,10 @@
 	
 	
 	<%
-		String email = request.getParameter("email");//获取到用户传过来的email
+		String username = request.getParameter("username");//获取到用户传过来的用户编号
 		String openid = request.getParameter("openid");//获取到用户传过来的openid
 		GetUploadData data = new GetUploadData();
-		ArrayList<UploadData> lists = data.getUploadData(email,openid);
+		ArrayList<UploadData> lists = data.getUploadData(username,openid);
 		session.setAttribute("lists", lists);
 	%>
 		

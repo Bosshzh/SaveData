@@ -18,12 +18,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.lanling.util.JDBCUtil;
+import com.lanling.util.Util;
 
 public class XiuGaiServlet extends HttpServlet {
 	
@@ -34,7 +36,9 @@ public class XiuGaiServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
-		String email = (String) request.getSession().getAttribute("email");
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("username");//从session获取到用户编号
+		String openid = (String) session.getAttribute("openid");//从session中获取到openid
 		String name = request.getParameter("name");//昵称
 		String sex = request.getParameter("sex");//性别
 		String province = request.getParameter("province");//省份
@@ -42,22 +46,24 @@ public class XiuGaiServlet extends HttpServlet {
 		Connection connection = JDBCUtil.getConnection();//获取Connection对象
 		Statement statement = null;
 		Statement statement2 = null;
-		PrintWriter out = response.getWriter();
 		try {
 			statement = connection.createStatement();
-			int index = 0;
 			if(name != null) {//修改昵称
-				index = statement.executeUpdate("update user set name = '"+name+"' where email = '"+email+"';");
+				String sql = Util.isUsername(username, openid)?"update user set name = '"+name+"' where username = '"+username+"';":"update userqq set name = '"+name+"' where openid = '"+openid+"';";
+				statement.executeUpdate(sql);
 			}else if(sex != null) {//修改性别
-				index = statement.executeUpdate("update user set sex = '"+sex+"' where email = '"+email+"';");
+				String sql = Util.isUsername(username, openid)?"update user set sex = '"+sex+"' where username = '"+username+"';":"update userqq set sex = '"+sex+"' where openid = '"+openid+"';";
+				statement.executeUpdate(sql);
 			}else if(province != null){
-				index = statement.executeUpdate("update user set province = '"+province+"' where email = '"+email+"';");
+				String sql = Util.isUsername(username, openid)?"update user set province = '"+province+"' where username = '"+username+"';":"update userqq set province = '"+province+"' where openid = '"+openid+"';";
+				statement.executeUpdate(sql);
 			}else if(city != null){
-				index = statement.executeUpdate("update user set city = '"+city+"' where email = '"+email+"';");
+				String sql = Util.isUsername(username, openid)?"update user set city = '"+city+"' where username = '"+username+"';":"update userqq set city = '"+city+"' where openid = '"+openid+"';";
+				statement.executeUpdate(sql);
 			}else{//修改头像
 				statement2 = connection.createStatement();
 				ResultSet rs = null;
-				rs = statement2.executeQuery("select photo from user where email = '"+email+"';");
+				rs = statement2.executeQuery(Util.isUsername(username, openid)?"select photo from user where username = '"+username+"';":"select photo from userqq where openid = '"+openid+"';");
 				String photo = "";
 				if(rs.next()) {
 					photo = rs.getString("photo");
@@ -74,13 +80,13 @@ public class XiuGaiServlet extends HttpServlet {
 					e.printStackTrace();
 				}//获取上传的文件名
 	            for(FileItem fileItem:items){//将上传的所有文件保存到mysql数据库          
-//	                 
-//	            	String fileName = fileItem.getName();
-//                    // 获取文件名后缀, 返回 "."在文件名最后出现的索引, 就是文件后缀名
-//                    String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
-//                    // 存储的文件名根据获取的id来唯一确定, 这里测试使用 "test"
-//                    // id可以绑定到session或request变量等等，自己根据需要来扩展
-//                    String fileSaveName = email + "." + prefix; // id.后缀
+//		                 
+//		            	String fileName = fileItem.getName();
+//	                    // 获取文件名后缀, 返回 "."在文件名最后出现的索引, 就是文件后缀名
+//	                    String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
+//	                    // 存储的文件名根据获取的id来唯一确定, 这里测试使用 "test"
+//	                    // id可以绑定到session或request变量等等，自己根据需要来扩展
+//	                    String fileSaveName = email + "." + prefix; // id.后缀
                     // 获取文件输入流
                     InputStream inputStream = fileItem.getInputStream();
                     // 创建文件输出流，用于向指定文件名的文件写入数据
@@ -96,7 +102,7 @@ public class XiuGaiServlet extends HttpServlet {
                     inputStream.close();
                     fileOutputStream.close();
                     fileItem.delete();
-                    pre=connection.prepareStatement("update user set photo = ? where email = '"+email+"';");
+                    pre=connection.prepareStatement(Util.isUsername(username, openid)?"update user set photo = ? where username = '"+username+"';":"update userqq set photo = ? where openid = '"+openid+"';");
 	                pre.setString(1,photo);
 	                pre.executeUpdate();
 	                if(rs != null) {
@@ -110,12 +116,12 @@ public class XiuGaiServlet extends HttpServlet {
 	        		pre.close();
 	        	}
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
 			JDBCUtil.close(null, statement, connection);
 		}
-//		request.getRequestDispatcher("xiugai.jsp").forward(request, response);
 		response.sendRedirect("xiugai.jsp");
 	}
 

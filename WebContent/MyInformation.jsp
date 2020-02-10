@@ -19,48 +19,64 @@
 <body>
 
 	<%
-		String email = request.getParameter("email");//拿到邮箱账号
+		String username = request.getParameter("username");//拿到邮箱账号
 		String openid = request.getParameter("openid");//拿到openid
 		GetUploadData data = new GetUploadData();
-		User user = data.getUser(email, openid);
+		User user = data.getUser(username, openid);
 		session.setAttribute("user", user);
 	%>
 	
 	<div data-role="main" class="ui-content">
     	<table data-role="table" class="ui-responsive">
-			<thead>
-				<tr>
-					<th>头像</th>
-					<th>邮箱账号</th>
-					<th>昵称</th>
-					<th>性别</th>
-					<th>省份</th>
-					<th>城市</th>
-					<th>用户ID</th>
-				</tr>
-			</thead>
 			<tbody>
-				<tr>
+				
 					<%
 						if(user != null ){
-							if(user.isEmail()){
-					%>
-								<td><img width="100px" height="100px" src="<%=user.getPhoto() %>"></td>
-								<td><%=user.getEmail() %></td>
-								<td><%=user.getName() %></td>
-								<td><%=user.getSex() %></td>
-								<td><%=user.getProvince() %></td>
-								<td><%=user.getCity() %></td>
+							if(user.isUsername()){
+								//是用户账号登录的
+					%>			
+								<thead>
+									<tr>
+										<th>头像</th>
+										<th>用户账号</th>
+										<th>昵称</th>
+										<th>性别</th>
+										<th>省份</th>
+										<th>城市</th>
+									</tr>
+								</thead>
+								<tr>
+									<td><img width="100px" height="100px" src="<%=user.getPhoto() %>"></td>
+									<td><%=user.getUsername() %></td>
+									<td><%=user.getName() %></td>
+									<td><%=user.getSex() %></td>
+									<td><%=user.getProvince() %></td>
+									<td><%=user.getCity() %></td>
+								</tr>
 					<%			
 							}else{
+								//是qq登录的话
 					%>
-								<td><img width="100px" height="100px" src="<%=user.getPhotoqq() %>"></td>
-								<td><%=user.getEmail() %></td>
-								<td><%=user.getName() %></td>
-								<td><%=user.getSex() %></td>
-								<td><%=user.getProvince() %></td>
-								<td><%=user.getCity() %></td>
-								<td><%=user.getOpenid() %></td>
+								<thead>
+									<tr>
+										<th>头像</th>
+										<th>Openid</th>
+										<th>昵称</th>
+										<th>性别</th>
+										<th>省份</th>
+										<th>城市</th>
+										<th>邮箱账号</th>
+									</tr>
+								</thead>
+								<tr>
+									<td><img width="100px" height="100px" src="<%=user.getPhotoqq() %>"></td>
+									<td><%=user.getOpenid() %></td>
+									<td><%=user.getName() %></td>
+									<td><%=user.getSex() %></td>
+									<td><%=user.getProvince() %></td>
+									<td><%=user.getCity() %></td>
+									<td><%=user.getEmail() %></td>
+								</tr>
 					<%			
 							}
 							

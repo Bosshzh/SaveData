@@ -13,14 +13,14 @@ public class GetUploadData {
 	
 	
 	
-	public ArrayList<UploadData> getUploadData(String email,String openid) {
+	public ArrayList<UploadData> getUploadData(String username,String openid) {
 		String sql = "";
 		if(!"0".equals(openid)) {
 			//如果用户是第三方登录的话
 			sql = "select * from message where openid = '"+openid+"';";
-		}else if(!"0".equals(email)) {
+		}else if(!"0".equals(username)) {
 			//如果用户是邮箱账号密码登录的话
-			sql = "select * from message where email = '"+email+"';";
+			sql = "select * from message where username = '"+username+"';";
 		}else {
 			return null;
 		}
@@ -122,23 +122,24 @@ public class GetUploadData {
 		return lists;
 	}
 	
-	public User getUser(String email,String openid) {
+	public User getUser(String username,String openid) {
 		User user = null;
 		Connection connection = JDBCUtil.getConnection();//拿到数据库的连接
 		Statement statement1 = null;
 		ResultSet rs1 = null;
 		try {
-			if("0".equals(email)) {
+			
+			if(Util.isUsername(username, openid)) {//如果是用户账号登陆的话
+				statement1 = connection.createStatement();
+				rs1 = statement1.executeQuery("select * from user where username='"+username+"';");
+				if(rs1.next()) {
+					user = new User(username,rs1.getString("photo"),rs1.getString("name"),rs1.getString("sex"),rs1.getString("province"),rs1.getString("city"),rs1.getString("email"),true);
+				}
+			}else {//如果是qq登录的话
 				statement1 = connection.createStatement();
 				rs1 = statement1.executeQuery("select * from userqq where openid = '"+openid+"';");
 				if(rs1.next()) {
-					user = new User(rs1.getString("email"),rs1.getString("name"),rs1.getString("sex"),rs1.getString("province"),rs1.getString("city"),openid,rs1.getString("photo"),false);
-				}
-			}else {
-				statement1 = connection.createStatement();
-				rs1 = statement1.executeQuery("select * from user where email='"+email+"';");
-				if(rs1.next()) {
-					user = new User(email,rs1.getString("password"),rs1.getString("name"),rs1.getString("sex"),rs1.getString("province"),rs1.getString("city"),true,rs1.getString("photo"));
+					user = new User(openid,rs1.getString("photo"),rs1.getString("name"),rs1.getString("sex"),rs1.getString("province"),rs1.getString("city"),rs1.getString("email"));
 				}
 			} 
 		}catch (SQLException e) {

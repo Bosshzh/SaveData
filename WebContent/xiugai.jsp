@@ -1,5 +1,6 @@
 <%@page import="com.lanling.bean.User"%>
 <%@page import="com.lanling.util.GetUploadData"%>
+<%@page import="com.lanling.util.Util" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -19,17 +20,17 @@
 <body>
 
 	<%
-		String email = request.getParameter("email");//拿到邮箱账号
+		String username = request.getParameter("username");//拿到用户账号
 		String openid = request.getParameter("openid");//拿到openid
-		if(email == null && openid == null){
-			email = (String) session.getAttribute("email");
+		if(username == null && openid == null){//从XiuGaiServlet中重定向过来，没有username和openid
+			username = (String) session.getAttribute("username");
 			openid = (String) session.getAttribute("openid");
-		}else{
-			session.setAttribute("email", email);
+		}else{//将username和openid保存在session中
+			session.setAttribute("username", username);
 			session.setAttribute("openid", openid);
 		}
 		GetUploadData data = new GetUploadData();
-		User user = data.getUser(email, openid);
+		User user = data.getUser(username, openid);
 		session.setAttribute("user", user);
 	%>
 
@@ -37,13 +38,23 @@
 			<div data-role="content">
 				<div id="ct-list">
 					<ul data-role="listview" data-inset="true">
-						<!-- <li data-role="list-divider" class="list01">修改资料</li> -->
 						<li><a href="#page2">
 								<img width="100px" height="100px" src="<%=user.getPhoto() %>" align="center"/>
 							</a></li>
 						<li><a href="#">
-								<h2>邮箱账号</h2>
-								<p><%=user.getEmail() %></p>
+								<%
+									if(Util.isUsername(username, openid)){//是账号密码登陆的
+								%>
+										<h2>用户编号</h2>
+										<p><%=user.getUsername() %></p>
+								<%	
+									}else{
+								%>
+										<h2>openid</h2>
+										<p><%=user.getOpenid() %></p>
+								<%
+									}
+								%>
 							</a></li>
 						<li><a href="#page3">
 								<h2>昵称</h2>
@@ -61,12 +72,17 @@
 								<h2>城市</h2>
 								<p><%=user.getCity() %></p>
 							</a></li>
+						<li><a href="#">
+							<h2>邮箱</h2>
+							<p><%=user.getEmail() %></p>
+						</a></li>
 							
 					</ul>
 				</div>
 			</div>
 		</div>
 		
+		<!-- 头像修改 -->
 		<div id="page2" data-role="page">
 			<div data-role="header" data-position="inline">
 	     		<h1>更换头像</h1>

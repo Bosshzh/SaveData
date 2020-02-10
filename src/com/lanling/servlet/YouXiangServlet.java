@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import com.lanling.util.JDBCUtil;
 import com.lanling.util.SendEmilUtil;
+import com.lanling.util.Util;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 /**
@@ -48,21 +49,23 @@ public class YouXiangServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		String username = request.getParameter("username");//拿到username
 		String openid = request.getParameter("openid");//拿到openid
 		String email = request.getParameter("email");//拿到email
 		PrintWriter out = response.getWriter();//获取PrintWriter对象
-		System.out.println(openid+"   "+email);
+		String id = "0".equals(username)?openid:username;
 		if(session.getAttribute("verification") == null) {
+			//随机产生6位验证码
 			String verification_code = "";
 			Random ra =new Random();
             for (int i=0;i<6;i++){
                 verification_code+=ra.nextInt(10);
             }
 			String head = "【土壤施肥信息收集app】绑定邮箱";
-			String content = "您好：您在【土壤施肥信息收集app】中为：【"+openid+"】该用户ID绑定【"+email+"】该邮箱账号，\n\n您此次的邮箱验证码为：\t【"+verification_code+"】\t\n\n"
+			String content = "您好：您在【土壤施肥信息收集app】中为账号为：【"+id+"】的用户绑定【"+email+"】该邮箱账号，\n\n您此次的邮箱验证码为：\t【"+verification_code+"】\t\n\n"
 					+ "请勿将此验证码告诉任何人";
 			if(SendEmilUtil.sendEmail(email, head, content)) {
-				session.setAttribute("verification", verification_code);
+				session.setAttribute("verification", verification_code);//将验证码保存在session中
 				request.getRequestDispatcher("/youxiang.jsp").forward(request, response);
 			}else {
 				out.write("邮箱验证码发送失败，请重试");
@@ -75,7 +78,13 @@ public class YouXiangServlet extends HttpServlet {
 				Statement statement;
 				try {
 					statement = connection.createStatement();//获取Statement对象
-					int index = statement.executeUpdate("update userqq set email='"+email+"'where openid = '"+openid+"';");
+					int index = 0;
+					if(Util.isUsername(username, openid)) {
+						index = statement.executeUpdate("update user set email = '"+email+"' where username = '"+username+"';");
+					}else {
+						index = statement.executeUpdate("update userqq set email = '"+email+"'where openid = '"+openid+"';");
+					}
+					
 					if(index != 0) {
 						//更新成功
 						out.write("绑定邮箱成功，恭喜");

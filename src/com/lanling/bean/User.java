@@ -4,49 +4,56 @@ import java.sql.Blob;
 
 public class User {
 	
-	private String email;//邮箱账号
+	private String username;//用户账号
 	private String password;//密码
 	private String name;//昵称
 	private String sex;//性别
 	private String province;//省份
 	private String city;//城市
+	private String email;//邮箱
 	private String photo;//头像
 	private String openid;//openid
 	private String photoqq;//头像路径
-	private boolean isEmail;//是email登陆的
+	private boolean isUsername;//是用户账号登陆的
 	
 	
-	//邮箱账号
-	public User(String email, String password, String name, String sex, String province, String city,boolean isEmail, String photo) {
+	//用户账号登录的发
+	public User(String username, String photo ,String name, String sex, String province, String city,String email,boolean isUsername) {
 		super();
-		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.sex = sex;
-		this.province = province;
-		this.city = city;
+		this.username = username;
 		this.photo = photo;
-		this.isEmail = isEmail;
-	}
-	//用户ID
-	public User(String email, String name, String sex, String province, String city, String openid, String photoqq,boolean isEmail) {
-		super();
-		this.email = email;
 		this.name = name;
 		this.sex = sex;
 		this.province = province;
 		this.city = city;
+		this.email = email;
+		this.isUsername = isUsername;
+	}
+	//qq登录的
+	public User(String openid, String photoqq, String name, String sex, String province, String city, String email) {
+		super();
 		this.openid = openid;
 		this.photoqq = photoqq;
-		this.isEmail = isEmail;
+		this.name = name;
+		this.sex = sex;
+		this.province = province;
+		this.city = city;
+		this.email = email;
+		this.isUsername = isUsername;
 	}
 	
 	
-	public boolean isEmail() {
-		return isEmail;
+	public String getUsername() {
+		return username;
 	}
-	public void setEmail(boolean isEmail) {
-		this.isEmail = isEmail;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public boolean isUsername() {
+		return isUsername;
+	}
+	public void setUsername(boolean isUsername) {
+		this.isUsername = isUsername;
 	}
 	public String getProvince() {
 		return province;
