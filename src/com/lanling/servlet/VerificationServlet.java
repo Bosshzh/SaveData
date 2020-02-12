@@ -40,7 +40,6 @@ public class VerificationServlet extends HttpServlet {
 		String email = request.getParameter("email");//拿到email
 		String verification_code = request.getParameter("verification_code");//拿到验证码
 		String type = request.getParameter("type");//判断是注册还是找回密码
-		
 		PrintWriter out = response.getWriter();
 			String content = "";
 			String head = "";
@@ -54,9 +53,9 @@ public class VerificationServlet extends HttpServlet {
 						+ "请勿将此验证码告诉任何人";
 			}
 			if(SendEmilUtil.sendEmail(email, head, content)) {
-				out.write("4");
+				out.write("4");//如果验证码发送成功,返回4
 			}else {
-				out.write("5");
+				out.write("5");//如果验证码发送失败，返回5
 			}
 	}
 }

@@ -1,4 +1,4 @@
-<%@page import="com.lanling.util.YouXiangUtil"%>
+<%@page import="com.lanling.util.BandingUtil"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -20,7 +20,7 @@
 	<%
 		String username = request.getParameter("username");//拿到用户编号
 		String openid = request.getParameter("openid");//拿到openid
-		if(YouXiangUtil.isbangding(username,openid)){
+		if(BandingUtil.isbangding(username, openid) != null){
 			//如果已经绑定邮箱了的话
 	%>
 			<h1 align="center">对不起，您已经绑定了邮箱</h1>
@@ -74,9 +74,9 @@
         		var youxiang_email = document.getElementById("youxiang_email");
         		var youxiang_span = document.getElementById("youxiang_span");
         		var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
-       		　　if(youxiang_email.value === ""){ //输入不能为空
+       			if(youxiang_email.value === ""){ //输入不能为空
        				youxiang_span.style.color="red";
-       		　　　　youxiang_span.innerHTML = "邮箱不能为空";
+       				youxiang_span.innerHTML = "邮箱不能为空";
        		　　}else if(!reg.test(youxiang_email.value)){ //正则验证不通过，格式不对
        				youxiang_span.style.color="red";
        				youxiang_span.innerHTML = "邮箱格式验证不通过";
@@ -84,8 +84,8 @@
        				youxiang_span.style.color="green";
 					youxiang_span.innerHTML = "邮箱格式验证通过";
 					youxiang_form.submit();
-       		　　}
-        	}
+      		　　}
+ 			}
         </script>
 	<%		
 		}

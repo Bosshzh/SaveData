@@ -29,63 +29,28 @@
 	<div data-role="main" class="ui-content">
     	<table data-role="table" class="ui-responsive">
 			<tbody>
-				
-					<%
-						if(user != null ){
-							if(user.isUsername()){
-								//是用户账号登录的
-					%>			
-								<thead>
-									<tr>
-										<th>头像</th>
-										<th>用户账号</th>
-										<th>昵称</th>
-										<th>性别</th>
-										<th>省份</th>
-										<th>城市</th>
-									</tr>
-								</thead>
-								<tr>
-									<td><img width="100px" height="100px" src="<%=user.getPhoto() %>"></td>
-									<td><%=user.getUsername() %></td>
-									<td><%=user.getName() %></td>
-									<td><%=user.getSex() %></td>
-									<td><%=user.getProvince() %></td>
-									<td><%=user.getCity() %></td>
-								</tr>
-					<%			
-							}else{
-								//是qq登录的话
-					%>
-								<thead>
-									<tr>
-										<th>头像</th>
-										<th>Openid</th>
-										<th>昵称</th>
-										<th>性别</th>
-										<th>省份</th>
-										<th>城市</th>
-										<th>邮箱账号</th>
-									</tr>
-								</thead>
-								<tr>
-									<td><img width="100px" height="100px" src="<%=user.getPhotoqq() %>"></td>
-									<td><%=user.getOpenid() %></td>
-									<td><%=user.getName() %></td>
-									<td><%=user.getSex() %></td>
-									<td><%=user.getProvince() %></td>
-									<td><%=user.getCity() %></td>
-									<td><%=user.getEmail() %></td>
-								</tr>
-					<%			
-							}
-							
-					%>
-							
-					<%
-						}
-					%>
-				</tr>
+				<thead>
+					<tr>
+						<th>头像</th>
+						<th>用户账号</th>
+						<th>昵称</th>
+						<th>性别</th>
+						<th>省份</th>
+						<th>城市</th>
+						<th>邮箱</th>
+						<th>登录方式</th>
+					</tr>
+				</thead>
+					<tr>
+						<td><img width="100px" height="100px" src="<%=user.getPhoto() %>"></td>
+						<td><%=user.getUsername() %></td>
+						<td><%=user.getName() %></td>
+						<td><%=user.getSex() %></td>
+						<td><%=user.getProvince() %></td>
+						<td><%=user.getCity() %></td>
+						<td><%=user.getEmail() %></td>
+						<td><%=user.isUsername()?"账号密码登录":"第三方QQ登录" %></td>
+					</tr>
 			</tbody>
 		</table>
   	</div>

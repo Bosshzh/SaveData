@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.lanling.util.BandingUtil;
 import com.lanling.util.JDBCUtil;
 import com.lanling.util.SendEmilUtil;
 import com.lanling.util.Util;
@@ -53,7 +54,7 @@ public class YouXiangServlet extends HttpServlet {
 		String openid = request.getParameter("openid");//拿到openid
 		String email = request.getParameter("email");//拿到email
 		PrintWriter out = response.getWriter();//获取PrintWriter对象
-		String id = "0".equals(username)?openid:username;
+		String id = Util.isUsername(username, openid)?username:openid;
 		if(session.getAttribute("verification") == null) {
 			//随机产生6位验证码
 			String verification_code = "";
@@ -68,35 +69,29 @@ public class YouXiangServlet extends HttpServlet {
 				session.setAttribute("verification", verification_code);//将验证码保存在session中
 				request.getRequestDispatcher("/youxiang.jsp").forward(request, response);
 			}else {
-				out.write("邮箱验证码发送失败，请重试");
+				out.write("<h2>邮箱验证码发送失败，请重试</h2>");
 			}
 		}else {
 			String verification_yanzheng = request.getParameter("verification");
-			if(verification_yanzheng.equals(session.getAttribute("verification"))) {
-				//验证码验证成功
+			if(verification_yanzheng.equals(session.getAttribute("verification"))) {//验证码验证成功
+				session.removeAttribute("verification");//清楚验证码
 				Connection connection = JDBCUtil.getConnection();//获取Connection对象
 				Statement statement;
 				try {
 					statement = connection.createStatement();//获取Statement对象
 					int index = 0;
-					if(Util.isUsername(username, openid)) {
-						index = statement.executeUpdate("update user set email = '"+email+"' where username = '"+username+"';");
+					String sql = Util.isUsername(username, openid)?"update user set email = '"+email+"' where username = '"+username+"';":"update userqq set email = '"+email+"'where openid = '"+openid+"';";
+					index = statement.executeUpdate(sql);
+					if(index == 0) {//更新失败
+						out.write("<h2>绑定邮箱失败，<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>重试</a></h2>");
 					}else {
-						index = statement.executeUpdate("update userqq set email = '"+email+"'where openid = '"+openid+"';");
-					}
-					
-					if(index != 0) {
-						//更新成功
-						out.write("绑定邮箱成功，恭喜");
-					}else {
-						out.write("绑定邮箱失败，请重试");
+						out.write("<h2>绑定邮箱成功，恭喜!，进入<a href='/SaveData/feedback.jsp?username="+username+"&openid="+openid+"'>反馈</a></h2>");
 					}
 				}catch (SQLException e) {
-					out.write("绑定邮箱失败，请重试");
-					e.printStackTrace();
+					out.write("<h2>绑定邮箱失败，每个邮箱只能绑定一个账号<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>重试</a></h2>\"</h2>");
 				}
 			}else {
-				out.write("验证码验证失败，请重试");
+				out.write("<h2>验证码验证失败，请重试</h2>");
 			}
 		}
 		

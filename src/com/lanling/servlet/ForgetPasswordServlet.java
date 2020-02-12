@@ -32,9 +32,11 @@ public class ForgetPasswordServlet extends HttpServlet {
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("select * from user where email = '"+email+"';");//先查找看数据库中是否有该邮箱账号
 			if(rs.next()) {
-				int index = statement.executeUpdate("update user set password = '"+password+"' where email = '"+email+"';");
+				String username = rs.getString("username");//拿到用户名
+				String photouser = "http://www.zhengzhoudaxue.cn:8080"+rs.getString("photo");
+				int index = statement.executeUpdate("update user set password = '"+password+"' where username = '"+username+"';");
 				if(index != 0) {
-					out.write("0");//更新数据成功
+					out.write("0&"+username+"&"+photouser);//更改密码成功
 				}else {
 					out.write("1");//插入失败
 				}

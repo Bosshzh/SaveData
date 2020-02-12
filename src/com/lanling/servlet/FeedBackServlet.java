@@ -44,9 +44,8 @@ public class FeedBackServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		String email = request.getParameter("email");
+		String email = request.getParameter("email");//拿到邮箱账号
 		String content = request.getParameter("content");
-		System.out.println("用户email为："+email+"，用户输入内容为："+content);
 		Date date = new Date(System.currentTimeMillis());
 		connection = JDBCUtil.getConnection();
 		try {
@@ -56,14 +55,16 @@ public class FeedBackServlet extends HttpServlet {
 			ps.setDate(3, date);
 			int index = ps.executeUpdate();
 			if(index != 0) {
-				if(SendEmilUtil.sendEmail("1757741394@qq.com","【土壤施肥信息收集app】用户反馈", "邮箱账户为："+email+"的用户向您发来用户反馈：\n\n【"+content+"】\n\n,请及时回复该用户")) {
-					response.sendRedirect("/SaveData/success.jsp");
+				if(SendEmilUtil.sendEmail("1757741394@qq.com","【土壤施肥信息收集app】用户反馈", "邮箱账号为："+email+"的用户向您发来用户反馈：\n\n【"+content+"】\n\n请及时回复该用户")) {
+					out.write("<h2>反馈成功</h2><br/><h2>将以邮件形式发送给开发人员</h2>");
 				}else {
-					response.sendRedirect("/SaveData/error.jsp");
+					String username = request.getParameter("username");
+					String openid = request.getParameter("openid");
+					out.write("<h2>反馈失败，<a href='/SaveData/feedback.jsp?username="+username+"&openid="+openid+"'>重试</a></h2>");
 				}
 			}
 		} catch (SQLException e) {
-			out.write("反馈出现了问题：email为："+email);
+			out.write("<h2>反馈出现了问题：email为："+email+"</h2>");
 			e.printStackTrace();
 		}
 	}

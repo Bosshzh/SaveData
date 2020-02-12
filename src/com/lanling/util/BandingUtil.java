@@ -7,25 +7,24 @@ import java.sql.Statement;
 
 public class BandingUtil {
 	
-	public static boolean isbangding(String openid) {
+	public static String isbangding(String username,String openid) {
 		Connection connection = JDBCUtil.getConnection();
 		Statement statement = null;
 		ResultSet rs = null;
-		boolean bangding = false;
+		String email = "δ֪";
 		try {
 			statement = connection.createStatement();
-			rs = statement.executeQuery("select email from userqq where openid = '"+openid+"';");
+			String sql = Util.isUsername(username, openid)?"select email from user where username = '"+username+"';":"select email from userqq where openid = '"+openid+"';";
+			rs = statement.executeQuery(sql);
 			if(rs.next()) {
-				bangding = true;
-			}else {
-				bangding = false;
+				email = rs.getString("email");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
 			JDBCUtil.close(rs, statement, connection);
 		}
-		return bangding;
+		return email;
 	}
 
 }

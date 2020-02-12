@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lanling.util.BandingUtil;
 import com.lanling.util.JDBCUtil;
+import com.lanling.util.Util;
 
 public class BangDingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,24 +30,25 @@ public class BangDingServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String username = request.getParameter("username");//拿到用户编号
 		String openid = request.getParameter("openid");//拿到openid
 		PrintWriter out = response.getWriter();
-		System.out.println(openid);
 		Connection connection = JDBCUtil.getConnection();
 		Statement statement = null;
 		ResultSet rs = null;
 		try {
 			statement = connection.createStatement();
-			rs = statement.executeQuery("select email from userqq where openid = '"+openid+"';");
+			String sql = Util.isUsername(username, openid)?"select email from user where username = '"+username+"';":"select email from userqq where openid = '"+openid+"';";
+			rs = statement.executeQuery(sql);
 			if(rs.next()) {
-				if(rs.getString("email") == null) {
+				if(rs.getString("email").equals("未知")) {
 					out.write("1");//没有绑定邮箱
 				}else {
 					out.write(rs.getString("email"));//已经绑定了邮箱
 				}
 			}
 		} catch (SQLException e) {
-			out.write("2");
+			out.write("2");//出错
 			e.printStackTrace();
 		}finally {
 			JDBCUtil.close(rs, statement, connection);
