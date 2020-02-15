@@ -40,7 +40,7 @@
 						}
 					%>
 					<input type="email" name="email" id="youxiang_email" placeholder="请输入邮箱" value="<%=value %>">
-					<span id="youxiang_span" ></span><br/>
+					<span id="youxiang_span" ></span><br/><br/>
 	                <%
 	                	if(session.getAttribute("verification") == null){
 	                %>
@@ -53,7 +53,7 @@
 	                	}
 	                %>
 					<label for="verification">验证码:</label>
-					<input type="text" name="verification" id="verification"><br>
+					<input type="text" name="verification" id="verification"><br><br/>
 					<%
 	                	if(session.getAttribute("verification") == null){
 	                %>
@@ -85,7 +85,7 @@
 					youxiang_span.innerHTML = "邮箱格式验证通过";
 					youxiang_form.submit();
       		　　}
- 			}
+			}
         </script>
 	<%		
 		}

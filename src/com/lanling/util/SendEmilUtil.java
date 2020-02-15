@@ -1,5 +1,6 @@
 package com.lanling.util;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -13,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 public class SendEmilUtil {
 	
-	public static boolean sendEmail(String emailTo,String head,String content) {
+	public static boolean sendEmail(String emailTo,String head,String content) throws UnsupportedEncodingException {
 		Properties properties = System.getProperties();
 		properties.setProperty("mail.smtp.host", "smtp.163.com");
 		properties.put("mail.smtp.auth", "true");
@@ -32,13 +33,14 @@ public class SendEmilUtil {
 		MimeMessage message = new MimeMessage(session);
 		try {
 			// Set From: 头部头字段
-			message.setFrom(new InternetAddress("bmwdlina@163.com"));
+			message.setFrom(new InternetAddress("bmwdlina@163.com","小胡","utf-8"));
 			// Set To: 头部头字段
 			message.addRecipient(Message.RecipientType.TO,new InternetAddress(emailTo));
 			// Set Subject: 头部头字段
-			message.setSubject(head);
+			message.setSubject(head,"utf-8");
 			// 设置消息体
-			message.setText(content);
+//			message.setText(content);
+			message.setContent(content, "text/plain;charset=utf-8");   //生成邮件正文    
 	        // 发送消息
 	        Transport.send(message);
 	        return true;

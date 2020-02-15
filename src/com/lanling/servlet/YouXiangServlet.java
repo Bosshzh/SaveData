@@ -91,7 +91,8 @@ public class YouXiangServlet extends HttpServlet {
 					out.write("<h2>绑定邮箱失败，每个邮箱只能绑定一个账号<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>重试</a></h2>\"</h2>");
 				}
 			}else {
-				out.write("<h2>验证码验证失败，请重试</h2>");
+				session.removeAttribute("verification");//清楚验证码
+				out.write("<h2>绑定邮箱失败，<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>重试</a></h2>");
 			}
 		}
 		
