@@ -21,7 +21,7 @@
 			long size = 0l;
 			byte[] bs = null;
 			OutputStream outs;
-			if(type == 1){//土地景观图1
+			/* if(type == 1){//土地景观图1
 				blob = uploadData.getLand_image1();//土地景观图1
 				size = blob.length();
 				bs = blob.getBytes(1, (int)size);
@@ -33,7 +33,7 @@
 				blob = uploadData.getInterview_image();//现场访谈图
 				size = blob.length();
 				bs = blob.getBytes(1, (int)size);
-			}
+			} */
 			response.setContentType("image/jpeg");
 			outs = response.getOutputStream();
 			outs.write(bs);

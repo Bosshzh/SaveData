@@ -1,306 +1,382 @@
 package com.lanling.bean;
 
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.sql.Blob;
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
-import org.omg.CORBA.Environment;
+public class UploadData implements Serializable {
 
-public class UploadData {
-	private String location;//µØÀíÎ»ÖÃ
-    private String province;//Ê¡¼¶
-    private String city;//ÊĞ¼¶
-    private String district;//ÏØ¼¶
-    private double latitude = 0.0;//Î³¶È
-    private double longitude = 0.0;//¾­¶È
-    private String crop_sort = "Ğ¡Âó";//×÷ÎïÖÖÀà
-    private String land_sort = "Ë®Ìï";//ÍÁµØÀàĞÍ
-    private int harvest;//²úÁ¿
-    //·ÊÁÏµÄÖÖÀà
-    private String manure_sort = "²»Ê©·Ê";//·ÊÁÏµÄÖÖÀà
-    private int danfei;//µª·Ê
-    private int linfei;//Á×·Ê
-    private int jiafei;//¼Ø·Ê
-    private int qita;//ÆäËü·Ê
-    private String dongwufenbian = "ÎŞ";//¶¯Îï·à±ã
-    private String nongyefeiqiwu = "ÎŞ";//Å©Òµ·ÏÆúÎï
-    private String gongyefeiqiwu = "ÎŞ";//¹¤Òµ·ÏÆúÎï
-    private String shenghuolaji = "ÎŞ";//Éú»îÀ¬»ø
-    private String nigou = "ÎŞ";//Äà¹¸
-    //½½Ë®µÄ´ÎÊı
-    private int water_number;//½½Ë®´ÎÊı
-    private Date waterDate_first;//µÚÒ»´Î½½Ë®Ê±¼ä
-    private Date waterDate_second;//µÚ¶ş´Î½½Ë®Ê±¼ä
-    private Date waterDate_third;//µÚÈı´Î½½Ë®Ê±¼ä
-    private int waterNumber_first;//µÚÒ»´Î½½Ë®Á¿
-    private int waterNumber_second;//µÚ¶ş´Î½½Ë®Á¿
-    private  int waterNumber_third;//µÚÈı´Î½½Ë®Á¿
-    //µÚÒ»´ÎÊ©·ÊµÄÊ±¼ä
-    private int manure_number;//Ê©·Ê´ÎÊı
-    private Date manureDate_first;//µÚÒ»´ÎÊ©·ÊÊ±¼ä
-    private Date manureDate_second;//µÚ¶ş´ÎÊ©·ÊÊ±¼ä
-    private Date manureDate_third;//µÚÈı´ÎÊ©·ÊÊ±¼ä
-    private int manureNumber_first;//µÚÒ»´ÎÊ©·ÊÁ¿
-    private int manureNumber_second;//µÚ¶ş´ÎÊ©·ÊÁ¿
-    private int manureNumber_third;//µÚÈı´ÎÊ©·ÊÁ¿
-    private String foreign_id;//Íâ¼ü
-    private String spray = "²»´òÒ©";//ÊÇ·ñ´òÒ©
-    private String weed = "²»³ı²İ";//ÊÇ·ñ³ı²İ
-    private Blob land_image1;//ÍÁµØ¾°¹ÛÍ¼1
-    private Blob land_image2;//ÍÁµØ¾°¹ÛÍ¼2
-    private Blob interview_image;//ÓÃ»§·ÃÌ¸Í¼
-    private Date date;//ÉÏ´«Ê±¼ä
-    private String user_phone;//ÉÏ´«ÓÃ»§ÊÖ»úºÅ
-    
-	public String getForeign_id() {
-		return foreign_id;
-	}
-	public void setForeign_id(String foreign_id) {
-		this.foreign_id = foreign_id;
-	}
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	public String getProvince() {
-		return province;
-	}
-	public void setProvince(String province) {
-		this.province = province;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getDistrict() {
-		return district;
-	}
-	public void setDistrict(String district) {
-		this.district = district;
-	}
-	public double getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-	public double getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-	public String getCrop_sort() {
-		return crop_sort;
-	}
-	public void setCrop_sort(String crop_sort) {
-		this.crop_sort = crop_sort;
-	}
-	public String getLand_sort() {
-		return land_sort;
-	}
-	public void setLand_sort(String land_sort) {
-		this.land_sort = land_sort;
-	}
-	public int getHarvest() {
-		return harvest;
-	}
-	public void setHarvest(int harvest) {
-		this.harvest = harvest;
-	}
-	public String getManure_sort() {
-		return manure_sort;
-	}
-	public void setManure_sort(String manure_sort) {
-		this.manure_sort = manure_sort;
-	}
-	public int getDanfei() {
-		return danfei;
-	}
-	public void setDanfei(int danfei) {
-		this.danfei = danfei;
-	}
-	public int getLinfei() {
-		return linfei;
-	}
-	public void setLinfei(int linfei) {
-		this.linfei = linfei;
-	}
-	public int getJiafei() {
-		return jiafei;
-	}
-	public void setJiafei(int jiafei) {
-		this.jiafei = jiafei;
-	}
-	public int getQita() {
-		return qita;
-	}
-	public void setQita(int qita) {
-		this.qita = qita;
-	}
-	public String getDongwufenbian() {
-		return dongwufenbian;
-	}
-	public void setDongwufenbian(String dongwufenbian) {
-		this.dongwufenbian = dongwufenbian;
-	}
-	public String getNongyefeiqiwu() {
-		return nongyefeiqiwu;
-	}
-	public void setNongyefeiqiwu(String nongyefeiqiwu) {
-		this.nongyefeiqiwu = nongyefeiqiwu;
-	}
-	public String getGongyefeiqiwu() {
-		return gongyefeiqiwu;
-	}
-	public void setGongyefeiqiwu(String gongyefeiqiwu) {
-		this.gongyefeiqiwu = gongyefeiqiwu;
-	}
-	public String getShenghuolaji() {
-		return shenghuolaji;
-	}
-	public void setShenghuolaji(String shenghuolaji) {
-		this.shenghuolaji = shenghuolaji;
-	}
-	public String getNigou() {
-		return nigou;
-	}
-	public void setNigou(String nigou) {
-		this.nigou = nigou;
-	}
-	public int getWater_number() {
-		return water_number;
-	}
-	public void setWater_number(int water_number) {
-		this.water_number = water_number;
-	}
-	public Date getWaterDate_first() {
-		return waterDate_first;
-	}
-	public void setWaterDate_first(Date waterDate_first) {
-		this.waterDate_first = waterDate_first;
-	}
-	public Date getWaterDate_second() {
-		return waterDate_second;
-	}
-	public void setWaterDate_second(Date waterDate_second) {
-		this.waterDate_second = waterDate_second;
-	}
-	public Date getWaterDate_third() {
-		return waterDate_third;
-	}
-	public void setWaterDate_third(Date waterDate_third) {
-		this.waterDate_third = waterDate_third;
-	}
-	public int getWaterNumber_first() {
-		return waterNumber_first;
-	}
-	public void setWaterNumber_first(int waterNumber_first) {
-		this.waterNumber_first = waterNumber_first;
-	}
-	public int getWaterNumber_second() {
-		return waterNumber_second;
-	}
-	public void setWaterNumber_second(int waterNumber_second) {
-		this.waterNumber_second = waterNumber_second;
-	}
-	public int getWaterNumber_third() {
-		return waterNumber_third;
-	}
-	public void setWaterNumber_third(int waterNumber_third) {
-		this.waterNumber_third = waterNumber_third;
-	}
-	public int getManure_number() {
-		return manure_number;
-	}
-	public void setManure_number(int manure_number) {
-		this.manure_number = manure_number;
-	}
-	public Date getManureDate_first() {
-		return manureDate_first;
-	}
-	public void setManureDate_first(Date manureDate_first) {
-		this.manureDate_first = manureDate_first;
-	}
-	public Date getManureDate_second() {
-		return manureDate_second;
-	}
-	public void setManureDate_second(Date manureDate_second) {
-		this.manureDate_second = manureDate_second;
-	}
-	public Date getManureDate_third() {
-		return manureDate_third;
-	}
-	public void setManureDate_third(Date manureDate_third) {
-		this.manureDate_third = manureDate_third;
-	}
-	public int getManureNumber_first() {
-		return manureNumber_first;
-	}
-	public void setManureNumber_first(int manureNumber_first) {
-		this.manureNumber_first = manureNumber_first;
-	}
-	public int getManureNumber_second() {
-		return manureNumber_second;
-	}
-	public void setManureNumber_second(int manureNumber_second) {
-		this.manureNumber_second = manureNumber_second;
-	}
-	public int getManureNumber_third() {
-		return manureNumber_third;
-	}
-	public void setManureNumber_third(int manureNumber_third) {
-		this.manureNumber_third = manureNumber_third;
-	}
-	public String getSpray() {
-		return spray;
-	}
-	public void setSpray(String spray) {
-		this.spray = spray;
-	}
-	public String getWeed() {
-		return weed;
-	}
-	public void setWeed(String weed) {
-		this.weed = weed;
-	}
-	
-	public Blob getLand_image1() {
-		return land_image1;
-	}
-	public void setLand_image1(Blob land_image1) {
-		this.land_image1 = land_image1;
-	}
-	public Blob getLand_image2() {
-		return land_image2;
-	}
-	public void setLand_image2(Blob land_image2) {
-		this.land_image2 = land_image2;
-	}
-	public Blob getInterview_image() {
-		return interview_image;
-	}
-	public void setInterview_image(Blob interview_image) {
-		this.interview_image = interview_image;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	public String getUser_phone() {
-		return user_phone;
-	}
-	public void setUser_phone(String user_phone) {
-		this.user_phone = user_phone;
-	}
-    
-    
+    private String uploadid;//ç¼–å·
 
+    //åœ°ç†ä¿¡æ¯
+    private String location;//åœ°ç†ä½ç½®
+    private String province;//çœçº§
+    private String city;//å¸‚çº§
+    private String district;//å¿çº§
+    private double latitude = 0.0;//çº¬åº¦
+    private double longitude = 0.0;//ç»åº¦
+
+    //è€•åœ°
+    private String crop_sort = "å°éº¦";//ä½œç‰©ç§ç±»
+    private String land_sort = "æ°´ç”°";//åœŸåœ°ç±»å‹
+    private int harvest;//äº§é‡
+
+
+    //è‚¥æ–™çš„ç§ç±»
+    private String manure_sort = "ä¸æ–½è‚¥";//è‚¥æ–™çš„ç§ç±»
+    private int danfei;//æ°®è‚¥
+    private int linfei;//ç£·è‚¥
+    private int jiafei;//é’¾è‚¥
+    private int qita;//å…¶å®ƒè‚¥
+    private String dongwufenbian = "æ— ";//åŠ¨ç‰©ç²ªä¾¿
+    private String nongyefeiqiwu = "æ— ";//å†œä¸šåºŸå¼ƒç‰©
+    private String gongyefeiqiwu = "æ— ";//å·¥ä¸šåºŸå¼ƒç‰©
+    private String shenghuolaji = "æ— ";//ç”Ÿæ´»åƒåœ¾
+    private String nigou = "æ— ";//æ³¥å¢
+    //æµ‡æ°´çš„æ¬¡æ•°
+    private int water_number;//æµ‡æ°´æ¬¡æ•°
+    private Date waterDate_first;//ç¬¬ä¸€æ¬¡æµ‡æ°´æ—¶é—´
+    private Date waterDate_second;//ç¬¬äºŒæ¬¡æµ‡æ°´æ—¶é—´
+    private Date waterDate_third;//ç¬¬ä¸‰æ¬¡æµ‡æ°´æ—¶é—´
+    private int waterNumber_first;//ç¬¬ä¸€æ¬¡æµ‡æ°´é‡
+    private int waterNumber_second;//ç¬¬äºŒæ¬¡æµ‡æ°´é‡
+    private  int waterNumber_third;//ç¬¬ä¸‰æ¬¡æµ‡æ°´é‡
+    //ç¬¬ä¸€æ¬¡æ–½è‚¥çš„æ—¶é—´
+    private int manure_number;//æ–½è‚¥æ¬¡æ•°
+    private Date manureDate_first;//ç¬¬ä¸€æ¬¡æ–½è‚¥æ—¶é—´
+    private Date manureDate_second;//ç¬¬äºŒæ¬¡æ–½è‚¥æ—¶é—´
+    private Date manureDate_third;//ç¬¬ä¸‰æ¬¡æ–½è‚¥æ—¶é—´
+    private int manureNumber_first;//ç¬¬ä¸€æ¬¡æ–½è‚¥é‡
+    private int manureNumber_second;//ç¬¬äºŒæ¬¡æ–½è‚¥é‡
+    private int manureNumber_third;//ç¬¬ä¸‰æ¬¡æ–½è‚¥é‡
+
+    private String spray = "ä¸æ‰“è¯";//æ˜¯å¦æ‰“è¯
+    private String weed = "ä¸é™¤è‰";//æ˜¯å¦é™¤è‰
+    private String land_image1;//åœŸåœ°æ™¯è§‚å›¾1
+    private String land_image2;//åœŸåœ°æ™¯è§‚å›¾2
+    private String interview_image;//ç”¨æˆ·è®¿è°ˆå›¾
+    private Date date;//ä¸Šä¼ æ—¶é—´
+    private String username;//é‚®ç®±è´¦å·
+    private String openid;//openid
+    private boolean uploadOrNot;//ç”¨æˆ·æ˜¯å¦å·²ç»ä¸Šä¼ æ•°æ®
+
+    public boolean isUploadOrNot() {
+        return uploadOrNot;
+    }
+
+    public void setUploadOrNot(boolean uploadOrNot) {
+        this.uploadOrNot = uploadOrNot;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public void clearManureSort(){
+        this.danfei = 0;
+        this.linfei = 0;
+        this.jiafei = 0;
+        this.qita = 0;
+        this.dongwufenbian = "æ— ";
+        this.nongyefeiqiwu = "æ— ";
+        this.gongyefeiqiwu = "æ— ";
+        this.shenghuolaji = "æ— ";
+        this.nigou = "æ— ";
+    }//æ¸…ç©ºæ‰uploadDataå¯¹è±¡è‚¥æ–™ç±»å‹çš„æ•°æ®
+    public void clearWaterNumber(){
+        this.waterDate_first = null;
+        this.waterDate_second = null;
+        this.waterDate_third = null;
+        this.waterNumber_first = 0;
+        this.waterNumber_second = 0;
+        this.waterNumber_third = 0;
+    }//æ¸…ç©ºæ‰uploadDataå¯¹è±¡æµ‡æ°´æ¬¡æ•°çš„æ•°æ®
+    public void clearManureNumber(){
+        this.manureDate_first = null;
+        this.manureDate_second = null;
+        this.manureDate_third = null;
+        this.manureNumber_first = 0;
+        this.manureNumber_second = 0;
+        this.manureNumber_third = 0;
+    }
+
+    public String getUploadid() {
+        return uploadid;
+    }
+    public void setUploadid(String uploadid) {
+        this.uploadid = uploadid;
+    }
+    public String getProvince() {
+        return province;
+    }
+    public void setProvince(String province) {
+        this.province = province;
+    }
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
+    }
+    public String getDistrict() {
+        return district;
+    }
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+    public int getManure_number() {
+        return manure_number;
+    }
+    public void setManure_number(int manure_number) {
+        this.manure_number = manure_number;
+    }
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+    public double getLatitude() {
+        return latitude;
+    }
+    public double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+    public String getCrop_sort() {
+        return crop_sort;
+    }
+    public void setCrop_sort(String crop_sort) {
+        this.crop_sort = crop_sort;
+    }
+    public String getLand_sort() {
+        return land_sort;
+    }
+    public void setLand_sort(String land_sort) {
+        this.land_sort = land_sort;
+    }
+    public int getHarvest() {
+        return harvest;
+    }
+    public void setHarvest(int harvest) {
+        this.harvest = harvest;
+    }
+    public String getManure_sort() {
+        return manure_sort;
+    }
+    public void setManure_sort(String manure_sort) {
+        this.manure_sort = manure_sort;
+    }
+    public String getSpray() {
+        return spray;
+    }
+    public void setSpray(boolean spray) {
+        if (spray){
+            this.spray = "æ‰“è¯";
+        }else {
+            this.spray = "ä¸æ‰“è¯";
+        }
+    }
+    public String getWeed() {
+        return weed;
+    }
+    public void setWeed(boolean weed) {
+        if (weed){
+            this.weed = "é™¤è‰";
+        }else {
+            this.weed = "ä¸é™¤è‰";
+        }
+    }
+    public Date getDate() {
+        return date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setSpray(String spray) {
+        this.spray = spray;
+    }
+
+    public void setWeed(String weed) {
+        this.weed = weed;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getLand_Iamge1_String(){
+        return land_image1;
+    }
+    public void setLand_image1(String land_image1) {
+        this.land_image1 = land_image1;
+    }
+    public String getLand_Iamge2_String(){
+        return land_image2;
+    }
+    public void setLand_image2(String land_image2) {
+        this.land_image2 = land_image2;
+    }
+    public String getInterview_image_String(){
+        return interview_image;
+    }
+    public void setInterview_image(String interview_image) {
+        this.interview_image = interview_image;
+    }
+
+    public int getDanfei() {
+        return danfei;
+    }
+    public void setDanfei(int danfei) {
+        this.danfei = danfei;
+    }
+    public int getLinfei() {
+        return linfei;
+    }
+    public void setLinfei(int linfei) {
+        this.linfei = linfei;
+    }
+    public int getJiafei() {
+        return jiafei;
+    }
+    public void setJiafei(int jiafei) {
+        this.jiafei = jiafei;
+    }
+    public int getQita() {
+        return qita;
+    }
+    public void setQita(int qita) {
+        this.qita = qita;
+    }
+    public String getNigou() {
+        return nigou;
+    }
+    public void setNigou(String nigou) {
+        this.nigou = nigou;
+    }
+    public int getManureNumber_first() {
+        return manureNumber_first;
+    }
+    public void setManureNumber_first(int manureNumber_first) {
+        this.manureNumber_first = manureNumber_first;
+    }
+    public int getManureNumber_second() {
+        return manureNumber_second;
+    }
+    public void setManureNumber_second(int manureNumber_second) {
+        this.manureNumber_second = manureNumber_second;
+    }
+    public int getManureNumber_third() {
+        return manureNumber_third;
+    }
+    public void setManureNumber_third(int manureNumber_third) {
+        this.manureNumber_third = manureNumber_third;
+    }
+    public Date getManureDate_first() {
+        return manureDate_first;
+    }
+    public void setManureDate_first(Date manureDate_first) {
+        this.manureDate_first = manureDate_first;
+    }
+    public Date getManureDate_second() {
+        return manureDate_second;
+    }
+    public void setManureDate_second(Date manureDate_second) {
+        this.manureDate_second = manureDate_second;
+    }
+    public Date getManureDate_third() {
+        return manureDate_third;
+    }
+    public void setManureDate_third(Date manureDate_third) {
+        this.manureDate_third = manureDate_third;
+    }
+    public int getWaterNumber_first() {
+        return waterNumber_first;
+    }
+    public void setWaterNumber_first(int waterNumber_first) {
+        this.waterNumber_first = waterNumber_first;
+    }
+    public int getWaterNumber_second() {
+        return waterNumber_second;
+    }
+    public void setWaterNumber_second(int waterNumber_second) {
+        this.waterNumber_second = waterNumber_second;
+    }
+    public int getWaterNumber_third() {
+        return waterNumber_third;
+    }
+    public void setWaterNumber_third(int waterNumber_third) {
+        this.waterNumber_third = waterNumber_third;
+    }
+    public Date getWaterDate_first() {
+        return waterDate_first;
+    }
+    public void setWaterDate_first(Date waterDate_first) {
+        this.waterDate_first = waterDate_first;
+    }
+    public Date getWaterDate_second() {
+        return waterDate_second;
+    }
+    public void setWaterDate_second(Date waterDate_second) {
+        this.waterDate_second = waterDate_second;
+    }
+    public Date getWaterDate_third() {
+        return waterDate_third;
+    }
+    public void setWaterDate_third(Date waterDate_third) {
+        this.waterDate_third = waterDate_third;
+    }
+
+    public String getDongwufenbian() {
+        return dongwufenbian;
+    }
+
+    public void setDongwufenbian(String dongwufenbian) {
+        this.dongwufenbian = dongwufenbian;
+    }
+
+    public String getNongyefeiqiwu() {
+        return nongyefeiqiwu;
+    }
+
+    public void setNongyefeiqiwu(String nongyefeiqiwu) {
+        this.nongyefeiqiwu = nongyefeiqiwu;
+    }
+
+    public String getGongyefeiqiwu() {
+        return gongyefeiqiwu;
+    }
+
+    public void setGongyefeiqiwu(String gongyefeiqiwu) {
+        this.gongyefeiqiwu = gongyefeiqiwu;
+    }
+
+    public String getShenghuolaji() {
+        return shenghuolaji;
+    }
+
+    public void setShenghuolaji(String shenghuolaji) {
+        this.shenghuolaji = shenghuolaji;
+    }
+
+    public int getWater_number() {
+        return water_number;
+    }
+
+    public void setWater_number(int water_number) {
+        this.water_number = water_number;
+    }
 }

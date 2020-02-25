@@ -16,10 +16,10 @@ public class GetUploadData {
 	public ArrayList<UploadData> getUploadData(String username,String openid) {
 		String sql = "";
 		if(!"0".equals(openid)) {
-			//Èç¹ûÓÃ»§ÊÇµÚÈı·½µÇÂ¼µÄ»°
+			//ç¬¬ä¸‰æ–¹qqç™»å½•
 			sql = "select * from message where openid = '"+openid+"';";
 		}else if(!"0".equals(username)) {
-			//Èç¹ûÓÃ»§ÊÇÓÊÏäÕËºÅÃÜÂëµÇÂ¼µÄ»°
+			//è´¦å·å¯†ç ç™»å½•æ–¹å¼
 			sql = "select * from message where username = '"+username+"';";
 		}else {
 			return null;
@@ -30,7 +30,7 @@ public class GetUploadData {
 		Statement statement2 = null;
 		ResultSet rs1 = null;
 		ResultSet rs2 = null;
-		connection = JDBCUtil.getConnection();//»ñÈ¡Êı¾İ¿âµÄÁ¬½Ó
+		connection = JDBCUtil.getConnection();
 		try{
 			statement1 = connection.createStatement();
 			rs1 = statement1.executeQuery(sql);
@@ -71,52 +71,52 @@ public class GetUploadData {
 				data.setManureNumber_third(rs1.getInt("manurenumberthird"));
 				data.setSpray(rs1.getString("spray"));
 				data.setWeed(rs1.getString("weed"));
-				data.setForeign_id(rs1.getString("foreign_id"));
-				statement2 = connection.createStatement();
-				rs2 = statement2.executeQuery("select * from images where foreign_id = '"+rs1.getString("foreign_id")+"';");
-				if(rs2.next()) {
-					data.setLand_image1(rs2.getBlob("landimage1"));
-					data.setLand_image2(rs2.getBlob("landimage2"));
-					data.setInterview_image(rs2.getBlob("interview"));
-				}
+//				statement2 = connection.createStatement();
+//				rs2 = statement2.executeQuery("select * from images where id = '"+rs1.getString("id")+"';");
+//				if(rs2.next()) {
+//					data.setLand_image1(rs2.getBlob("landimage1"));
+//					data.setLand_image2(rs2.getBlob("landimage2"));
+//					data.setInterview_image(rs2.getBlob("interview"));
+//				}
 				lists.add(data);
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
-		}
-		if(rs2 != null) {
-			try {
-				rs2.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+		}finally {
+			if(rs2 != null) {
+				try {
+					rs2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		if(rs1 != null) {
-			try {
-				rs1.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if(rs1 != null) {
+				try {
+					rs1.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		if(statement2 != null) {
-			try {
-				statement2.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if(statement2 != null) {
+				try {
+					statement2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		if(statement1 != null) {
-			try {
-				statement1.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if(statement1 != null) {
+				try {
+					statement1.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		if(connection != null) {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if(connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return lists;
@@ -124,18 +124,18 @@ public class GetUploadData {
 	
 	public User getUser(String username,String openid) {
 		User user = null;
-		Connection connection = JDBCUtil.getConnection();//ÄÃµ½Êı¾İ¿âµÄÁ¬½Ó
+		Connection connection = JDBCUtil.getConnection();//ï¿½Ãµï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Statement statement1 = null;
 		ResultSet rs1 = null;
 		try {
 			
-			if(Util.isUsername(username, openid)) {//Èç¹ûÊÇÓÃ»§ÕËºÅµÇÂ½µÄ»°
+			if(Util.isUsername(username, openid)) {//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ËºÅµï¿½Â½ï¿½Ä»ï¿½
 				statement1 = connection.createStatement();
 				rs1 = statement1.executeQuery("select * from user where username='"+username+"';");
 				if(rs1.next()) {
 					user = new User(username,rs1.getString("photo"),rs1.getString("name"),rs1.getString("sex"),rs1.getString("province"),rs1.getString("city"),rs1.getString("email"),true);
 				}
-			}else {//Èç¹ûÊÇqqµÇÂ¼µÄ»°
+			}else {//ï¿½ï¿½ï¿½ï¿½ï¿½qqï¿½ï¿½Â¼ï¿½Ä»ï¿½
 				statement1 = connection.createStatement();
 				rs1 = statement1.executeQuery("select * from userqq where openid = '"+openid+"';");
 				if(rs1.next()) {

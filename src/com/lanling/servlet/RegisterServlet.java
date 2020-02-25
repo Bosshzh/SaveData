@@ -23,8 +23,8 @@ public class RegisterServlet extends HttpServlet {
 		Connection connection = JDBCUtil.getConnection();
 		String username = req.getParameter("username");//获取用户账号
 		String password = req.getParameter("password");//获取到密码
-		String[] photos = {"/images/xusong1.png","/images/xusong2.jpg","/images/xusong3.jpg",
-				"/images/xusong4.jpg","/images/xusong5.jpeg","/images/xusong6.jpg","/images/xusong7.jpg"};
+		String[] photos = {"/images/photo/xusong1.png","/images/photo/xusong2.jpg","/images/photo/xusong3.jpg",
+				"/images/photo/xusong4.jpg","/images/photo/xusong5.jpeg","/images/photo/xusong6.jpg","/images/photo/xusong7.jpg"};
 		String userphoto = photos[(int)(Math.random()*7)];
 		Statement statement = null;
 		PrintWriter out = resp.getWriter();

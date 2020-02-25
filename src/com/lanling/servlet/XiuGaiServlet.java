@@ -90,7 +90,7 @@ public class XiuGaiServlet extends HttpServlet {
                     // 获取文件输入流
                     InputStream inputStream = fileItem.getInputStream();
                     // 创建文件输出流，用于向指定文件名的文件写入数据
-                    FileOutputStream fileOutputStream = new FileOutputStream("/var"+photo);
+                    FileOutputStream fileOutputStream = new FileOutputStream(photo);
                     // 从输入流读取数据的下一个字节，到末尾时返回 -1
                     byte[] b = new byte[1024];
                     int length = 0;

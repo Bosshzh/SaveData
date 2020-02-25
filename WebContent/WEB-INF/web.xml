@@ -81,4 +81,14 @@
     <servlet-name>XiuGaiServlet</servlet-name>
     <url-pattern>/xiugai</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>UploadDataServlet</servlet-name>
+    <servlet-class>com.lanling.servlet.UploadDataServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadDataServlet</servlet-name>
+    <url-pattern>/uploaddata</url-pattern>
+  </servlet-mapping>
+  
+  
 </web-app>
