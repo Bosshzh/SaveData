@@ -46,17 +46,18 @@ public class UploadDataServlet extends HttpServlet {
 		}
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setSizeThreshold(1024*2048);//文件大小不能超过2M
-		ServletFileUpload upload = new ServletFileUpload();
+		ServletFileUpload upload = new ServletFileUpload(factory);
 		int index = 0;
 		try {
 			ArrayList<FileItem> fileitems = (ArrayList<FileItem>) upload.parseRequest(request);
 			for(FileItem fileItem : fileitems) {//如果是普通的参数的话
 				if(fileItem.isFormField()) {
 					String sql = fileItem.getString();//拿到值
+					out.println("sql语句为："+sql);
 					try {
 						index = statement.executeUpdate(sql);//直接执行插入语句
 					} catch (SQLException e) {
-						e.printStackTrace();
+						out.println("插入sql语句出错  ："+e.getMessage());
 					}
 				}else {//如果是文件
 					String value = fileItem.getName();
@@ -64,14 +65,14 @@ public class UploadDataServlet extends HttpServlet {
 					String filename = value.substring(start+1);
 					File file = new File("/images/uploaddata/"+filename);
 					try {
-						fileItem.write(file);
+						fileItem.write(new File("/usr/images/uploaddata",filename));
 					} catch (Exception e) {
-						e.printStackTrace();
+						out.println("图片名称为："+filename+"图像文件写入磁盘出错  ：  "+e.getMessage());
 					}
 				}
 			}
 		} catch (FileUploadException e) {
-			e.printStackTrace();
+			out.println("获取ArrayList文件集合出错  ： "+e.getMessage());
 		}finally {
 			JDBCUtil.close(null, statement, connection);
 		}
