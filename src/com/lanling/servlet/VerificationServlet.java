@@ -16,7 +16,6 @@ import com.lanling.util.SendEmilUtil;
 @WebServlet("/GetVericationCodeServlet")
 public class VerificationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String verification_code = "";//ÑéÖ¤Âë
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -37,25 +36,16 @@ public class VerificationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String email = request.getParameter("email");//ÄÃµ½email
-		String verification_code = request.getParameter("verification_code");//ÄÃµ½ÑéÖ¤Âë
-		String type = request.getParameter("type");//ÅĞ¶ÏÊÇ×¢²á»¹ÊÇÕÒ»ØÃÜÂë
+		String email = request.getParameter("email");//æ‹¿åˆ°é‚®ç®±è´¦å·
+		String verification_code = request.getParameter("verification_code");//æ‹¿åˆ°éªŒè¯ç 
 		PrintWriter out = response.getWriter();
-			String content = "";
-			String head = "";
-			if("0".equals(type)) {
-				head = "¡¾ÍÁÈÀÊ©·ÊĞÅÏ¢ÊÕ¼¯app¡¿×¢²áÕËºÅ";
-				content = "ÄúºÃ£ºÄúÔÚ¡¾ÍÁÈÀÊ©·ÊĞÅÏ¢ÊÕ¼¯app¡¿ÖĞÊ¹ÓÃ"+email+"¸ÃÓÊÏä×¢²áÕËºÅ£¬\n\nÄú´Ë´Î×¢²áµÄÓÊÏäÑéÖ¤ÂëÎª£º\t¡¾"+verification_code+"¡¿\t\n\n"
-						+ "ÇëÎğ½«´ËÑéÖ¤Âë¸æËßÈÎºÎÈË";
-			}else if("1".equals(type)) {
-				head = "¡¾ÍÁÈÀÊ©·ÊĞÅÏ¢ÊÕ¼¯app¡¿ÕÒ»ØÃÜÂë";
-				content = "ÄúºÃ£ºÄúÔÚ¡¾ÍÁÈÀÊ©·ÊĞÅÏ¢ÊÕ¼¯app¡¿ÖĞÊ¹ÓÃ"+email+"¸ÃÓÊÏäÕÒ»ØÕËºÅÃÜÂë£¬\n\nÄú´Ë´ÎµÄÓÊÏäÑéÖ¤ÂëÎª£º\t¡¾"+verification_code+"¡¿\t\n\n"
-						+ "ÇëÎğ½«´ËÑéÖ¤Âë¸æËßÈÎºÎÈË";
-			}
+			String head = "ã€åœŸå£¤æ–½è‚¥ä¿¡æ¯æ”¶é›†appã€‘æ‰¾å›å¯†ç ";
+			String content = "æ‚¨å¥½ï¼šæ‚¨åœ¨ã€åœŸå£¤æ–½è‚¥ä¿¡æ¯æ”¶é›†appã€‘ä¸­ä½¿ç”¨"+email+"è¯¥é‚®ç®±æ‰¾å›è´¦å·å¯†ç ï¼Œ\n\næ‚¨æ­¤æ¬¡çš„é‚®ç®±éªŒè¯ç ä¸ºï¼š ã€"+verification_code+"ã€‘\t\n\n"
+					+ "è¯·å‹¿å°†æ­¤éªŒè¯ç å‘Šè¯‰ä»»ä½•äºº";
 			if(SendEmilUtil.sendEmail(email, head, content)) {
-				out.write("4");//Èç¹ûÑéÖ¤Âë·¢ËÍ³É¹¦,·µ»Ø4
+				out.write("4");
 			}else {
-				out.write("5");//Èç¹ûÑéÖ¤Âë·¢ËÍÊ§°Ü£¬·µ»Ø5
+				out.write("5");
 			}
 	}
 }

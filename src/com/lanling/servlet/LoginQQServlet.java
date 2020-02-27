@@ -25,9 +25,9 @@ public class LoginQQServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		String openid = request.getParameter("openid");//ÓÃ»§ID
+		String openid = request.getParameter("openid");//ï¿½Ã»ï¿½ID
 		PrintWriter out = response.getWriter();
-		Connection connection = JDBCUtil.getConnection();//»ñÈ¡Êı¾İ¿âµÄÁ¬½Ó
+		Connection connection = JDBCUtil.getConnection();//ï¿½ï¿½È¡ï¿½ï¿½ï¿½İ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Statement statement1 = null;
 		ResultSet rs = null;
 		Statement statement2 = null;
@@ -35,28 +35,23 @@ public class LoginQQServlet extends HttpServlet {
 			statement1 = connection.createStatement();
 			statement2 = connection.createStatement();
 			rs = statement1.executeQuery("select * from userqq where openid = '"+openid+"';");
-			String name = request.getParameter("name");//ÓÃ»§êÇ³Æ
-			String sex = request.getParameter("sex");//ÓÃ»§ĞÔ±ğ
-			String province = request.getParameter("province");//Ê¡·İ
-			String city = request.getParameter("city");//³ÇÊĞ
-			String photo = request.getParameter("photo");//Í·ÏñÂ·¾¶
-			if(rs.next()) {
-				int index = statement2.executeUpdate("update userqq set name = '"+name+"',sex = '"+sex+"',province = '"+province+"',city = '"+city+"',photo = '"+photo+"' where openid = '"+openid+"';");
-				if(index != 0) {
-					out.write("0");//µÇÂ¼³É¹¦
-				}else {
-					out.write("3");//µÇÂ¼Ê§°Ü
-				}
-			}else {
+			String name = request.getParameter("name");//ï¿½Ã»ï¿½ï¿½Ç³ï¿½
+			String sex = request.getParameter("sex");//ï¿½Ã»ï¿½ï¿½Ô±ï¿½
+			String province = request.getParameter("province");//Ê¡ï¿½ï¿½
+			String city = request.getParameter("city");//ï¿½ï¿½ï¿½ï¿½
+			String photo = request.getParameter("photo");//Í·ï¿½ï¿½Â·ï¿½ï¿½
+			if(rs.next()) {//å¦‚æœæŸ¥è¯¢åˆ°äº†çš„è¯
+				out.write("0&http://www.zhengzhoudaxue.cn:8080"+rs.getString("photo"));
+			}else {//å¦‚æœæ²¡æœ‰æŸ¥è¯¢åˆ°
 				int index = statement2.executeUpdate("insert into userqq(openid,name,sex,province,city,photo) values('"+openid+"','"+name+"','"+sex+"','"+province+"','"+city+"','"+photo+"');");
 				if(index != 0) {
-					out.write("0");//µÇÂ¼³É¹¦
+					out.write("0");//ï¿½ï¿½Â¼ï¿½É¹ï¿½
 				}else {
-					out.write("3");//µÇÂ¼Ê§°Ü
+					out.write("3");//ï¿½ï¿½Â¼Ê§ï¿½ï¿½
 				}
 			}
 		} catch (SQLException e) {
-			out.write("3");//µÇÂ¼Ê§°Ü
+			out.write("3");//ï¿½ï¿½Â¼Ê§ï¿½ï¿½
 			e.printStackTrace();
 		}finally {
 			if(rs != null) {

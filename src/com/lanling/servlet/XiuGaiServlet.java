@@ -5,11 +5,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +31,8 @@ import com.lanling.util.Util;
 
 public class XiuGaiServlet extends HttpServlet {
 	
+	private String sql;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
@@ -37,92 +41,57 @@ public class XiuGaiServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("username");//´Ósession»ñÈ¡µ½ÓÃ»§±àºÅ
-		String openid = (String) session.getAttribute("openid");//´ÓsessionÖĞ»ñÈ¡µ½openid
-		String name = request.getParameter("name");//êÇ³Æ
-		String sex = request.getParameter("sex");//ĞÔ±ğ
-		String province = request.getParameter("province");//Ê¡·İ
-		String city = request.getParameter("city");//³ÇÊĞ
-		Connection connection = JDBCUtil.getConnection();//»ñÈ¡Connection¶ÔÏó
+		String username = (String) session.getAttribute("username");//æ‹¿åˆ°ç”¨æˆ·å
+		String openid = (String) session.getAttribute("openid");//æ‹¿åˆ°openid
+		Connection connection = JDBCUtil.getConnection();//è·å–æ•°æ®åº“çš„è¿æ¥
 		Statement statement = null;
-		Statement statement2 = null;
+		String name = request.getParameter("name");//è·å–ç”¨æˆ·å¡«å†™çš„æ˜µç§°
+		String sex = request.getParameter("sex");//è·å–ç”¨æˆ·å¡«å†™çš„æ€§åˆ«
+		String province = request.getParameter("province");//è·å–ç”¨æˆ·å¡«å†™çš„çœä»½
+		String city = request.getParameter("city");//è·å–åŸå¸‚
+		if(name != null) {
+			sql = Util.isUsername(username, openid)?"update user set name = '"+name+"' where username = '"+username+"';":"update userqq set name = '"+name+"' where openid = '"+openid+"';";
+		}else if(sex != null) {
+			sql = Util.isUsername(username, openid)?"update user set sex = '"+sex+"' where username = '"+username+"';":"update userqq set sex = '"+sex+"' where openid = '"+openid+"';";
+		}else if(province != null) {
+			sql = Util.isUsername(username, openid)?"update user set province = '"+province+"' where username = '"+username+"';":"update userqq set province = '"+province+"' where openid = '"+openid+"';";
+		}else if(city != null) {
+			sql = Util.isUsername(username, openid)?"update user set city = '"+city+"' where username = '"+username+"';":"update userqq set city = '"+city+"' where openid = '"+openid+"';";
+		}else {//å¦‚æœä»¥ä¸Šéƒ½ä¸ºç©ºï¼Œé‚£ä¹ˆå°±æ˜¯å›¾ç‰‡
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			factory.setSizeThreshold(1024*2048);
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			ArrayList<FileItem> fileitems;
+			try {
+				fileitems = (ArrayList<FileItem>) upload.parseRequest(request);
+				FileItem fileItem = fileitems.get(0);
+				String filename = fileItem.getName();
+				InputStream is = fileItem.getInputStream();
+				FileOutputStream fos = new FileOutputStream("/usr/images/photo/"+filename);
+	            byte[] buff=new byte[1024];
+	            int len=0;
+	            while((len=is.read(buff))>0){
+	                fos.write(buff,0,len);
+	            }
+	            fos.flush();
+	            is.close();
+	            fos.close();
+	            sql = Util.isUsername(username, openid)?"update user set photo = '/images/photo/"+filename+"' where username = '"+username+"';":"update userqq set photo = '/images/photo/"+filename+"' where openid = '"+openid+"';";
+			} catch (FileUploadException e) {
+				e.printStackTrace();
+			}
+		}
 		try {
 			statement = connection.createStatement();
-			if(name != null) {//ĞŞ¸ÄêÇ³Æ
-				String sql = Util.isUsername(username, openid)?"update user set name = '"+name+"' where username = '"+username+"';":"update userqq set name = '"+name+"' where openid = '"+openid+"';";
+			if(sql != null) {
 				statement.executeUpdate(sql);
-			}else if(sex != null) {//ĞŞ¸ÄĞÔ±ğ
-				String sql = Util.isUsername(username, openid)?"update user set sex = '"+sex+"' where username = '"+username+"';":"update userqq set sex = '"+sex+"' where openid = '"+openid+"';";
-				statement.executeUpdate(sql);
-			}else if(province != null){
-				String sql = Util.isUsername(username, openid)?"update user set province = '"+province+"' where username = '"+username+"';":"update userqq set province = '"+province+"' where openid = '"+openid+"';";
-				statement.executeUpdate(sql);
-			}else if(city != null){
-				String sql = Util.isUsername(username, openid)?"update user set city = '"+city+"' where username = '"+username+"';":"update userqq set city = '"+city+"' where openid = '"+openid+"';";
-				statement.executeUpdate(sql);
-			}else{//ĞŞ¸ÄÍ·Ïñ
-				statement2 = connection.createStatement();
-				ResultSet rs = null;
-				rs = statement2.executeQuery(Util.isUsername(username, openid)?"select photo from user where username = '"+username+"';":"select photo from userqq where openid = '"+openid+"';");
-				String photo = "";
-				if(rs.next()) {
-					photo = rs.getString("photo");
-				}
-				DiskFileItemFactory factory = new DiskFileItemFactory();
-		        ServletFileUpload sfu = new ServletFileUpload(factory);
-		        sfu.setHeaderEncoding("UTF-8");//ÉèÖÃ×Ö·û
-		        sfu.setSizeMax(1024*1024);//ÉÏ´«ÎÄ¼ş×î´ó1m
-		        PreparedStatement pre=null;
-	            List<FileItem> items = null;
-				try {
-					items = sfu.parseRequest(request);
-				} catch (FileUploadException e) {
-					e.printStackTrace();
-				}//»ñÈ¡ÉÏ´«µÄÎÄ¼şÃû
-	            for(FileItem fileItem:items){//½«ÉÏ´«µÄËùÓĞÎÄ¼ş±£´æµ½mysqlÊı¾İ¿â          
-//		                 
-//		            	String fileName = fileItem.getName();
-//	                    // »ñÈ¡ÎÄ¼şÃûºó×º, ·µ»Ø "."ÔÚÎÄ¼şÃû×îºó³öÏÖµÄË÷Òı, ¾ÍÊÇÎÄ¼şºó×ºÃû
-//	                    String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
-//	                    // ´æ´¢µÄÎÄ¼şÃû¸ù¾İ»ñÈ¡µÄidÀ´Î¨Ò»È·¶¨, ÕâÀï²âÊÔÊ¹ÓÃ "test"
-//	                    // id¿ÉÒÔ°ó¶¨µ½session»òrequest±äÁ¿µÈµÈ£¬×Ô¼º¸ù¾İĞèÒªÀ´À©Õ¹
-//	                    String fileSaveName = email + "." + prefix; // id.ºó×º
-                    // »ñÈ¡ÎÄ¼şÊäÈëÁ÷
-                    InputStream inputStream = fileItem.getInputStream();
-                    // ´´½¨ÎÄ¼şÊä³öÁ÷£¬ÓÃÓÚÏòÖ¸¶¨ÎÄ¼şÃûµÄÎÄ¼şĞ´ÈëÊı¾İ
-                    FileOutputStream fileOutputStream = new FileOutputStream(photo);
-                    // ´ÓÊäÈëÁ÷¶ÁÈ¡Êı¾İµÄÏÂÒ»¸ö×Ö½Ú£¬µ½Ä©Î²Ê±·µ»Ø -1
-                    byte[] b = new byte[1024];
-                    int length = 0;
-                    while ((length = inputStream.read(b)) != -1) {
-                        fileOutputStream.write(b,0,length);  // ½«Ö¸¶¨×Ö½ÚĞ´Èë´ËÎÄ¼şÊä³öÁ÷
-                    }
-                    fileOutputStream.flush();
-                    // ¹Ø±ÕÁ÷
-                    inputStream.close();
-                    fileOutputStream.close();
-                    fileItem.delete();
-                    pre=connection.prepareStatement(Util.isUsername(username, openid)?"update user set photo = ? where username = '"+username+"';":"update userqq set photo = ? where openid = '"+openid+"';");
-	                pre.setString(1,photo);
-	                pre.executeUpdate();
-	                if(rs != null) {
-	                	rs.close();
-	                }
-	                if(statement2 != null) {
-	                	statement2.close();
-	                }
-	            }
-	        	if(pre != null) {
-	        		pre.close();
-	        	}
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
 			JDBCUtil.close(null, statement, connection);
+			response.sendRedirect("/SaveData/xiugai.jsp");
 		}
-		response.sendRedirect("xiugai.jsp");
 	}
-
 }
+

@@ -46,53 +46,55 @@ public class YouXiangServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();//»ñÈ¡HttpSession¶ÔÏó
+		HttpSession session = request.getSession();//è·å–session
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
-		String username = request.getParameter("username");//ÄÃµ½username
-		String openid = request.getParameter("openid");//ÄÃµ½openid
-		String email = request.getParameter("email");//ÄÃµ½email
-		PrintWriter out = response.getWriter();//»ñÈ¡PrintWriter¶ÔÏó
+		String username = request.getParameter("username");//è·å–username
+		String openid = request.getParameter("openid");//è·å–openid
+		String email = request.getParameter("email");//è·å–email
+		PrintWriter out = response.getWriter();//è·å–PrintWriterå¯¹è±¡
 		String id = Util.isUsername(username, openid)?username:openid;
 		if(session.getAttribute("verification") == null) {
-			//Ëæ»ú²úÉú6Î»ÑéÖ¤Âë
+			//å¦‚æœéªŒè¯ç ä¸ºç©ºçš„è¯ï¼Œè¯´æ˜æ˜¯ç¬¬ä¸€æ¬¡éœ€è¦å‘é€éªŒè¯ç 
 			String verification_code = "";
 			Random ra =new Random();
             for (int i=0;i<6;i++){
                 verification_code+=ra.nextInt(10);
             }
-			String head = "¡¾ÍÁÈÀÊ©·ÊĞÅÏ¢ÊÕ¼¯app¡¿°ó¶¨ÓÊÏä";
-			String content = "ÄúºÃ£ºÄúÔÚ¡¾ÍÁÈÀÊ©·ÊĞÅÏ¢ÊÕ¼¯app¡¿ÖĞÎªÕËºÅÎª£º¡¾"+id+"¡¿µÄÓÃ»§°ó¶¨¡¾"+email+"¡¿¸ÃÓÊÏäÕËºÅ£¬\n\nÄú´Ë´ÎµÄÓÊÏäÑéÖ¤ÂëÎª£º\t¡¾"+verification_code+"¡¿\t\n\n"
-					+ "ÇëÎğ½«´ËÑéÖ¤Âë¸æËßÈÎºÎÈË";
+			String head = "ã€åœŸå£¤æ–½è‚¥ä¿¡æ¯æ”¶é›†appã€‘ç»‘å®šé‚®ç®±";
+			String content = "æ‚¨å¥½ï¼šæ‚¨åœ¨ã€åœŸå£¤æ–½è‚¥ä¿¡æ¯æ”¶é›†appã€‘ä¸­ä¸ºè´¦å·ä¸ºï¼šã€"+id+"ã€‘çš„ç”¨æˆ·ç»‘å®šã€"+email+"ã€‘è¯¥é‚®ç®±è´¦å·ï¼Œ\n\næ‚¨æ­¤æ¬¡çš„é‚®ç®±éªŒè¯ç ä¸ºï¼š ã€"+verification_code+"ã€‘\t\n\n"
+					+ "è¯·å‹¿å°†æ­¤éªŒè¯ç å‘Šè¯‰ä»»ä½•äºº";
 			if(SendEmilUtil.sendEmail(email, head, content)) {
-				session.setAttribute("verification", verification_code);//½«ÑéÖ¤Âë±£´æÔÚsessionÖĞ
+				session.setAttribute("verification", verification_code);//éªŒè¯ç å­˜å…¥sessionä¸­
 				request.getRequestDispatcher("/youxiang.jsp").forward(request, response);
 			}else {
-				out.write("<h2>ÓÊÏäÑéÖ¤Âë·¢ËÍÊ§°Ü£¬ÇëÖØÊÔ</h2>");
+				out.write("<h2>éªŒè¯ç å‘é€å¤±è´¥</h2>");
 			}
 		}else {
 			String verification_yanzheng = request.getParameter("verification");
-			if(verification_yanzheng.equals(session.getAttribute("verification"))) {//ÑéÖ¤ÂëÑéÖ¤³É¹¦
-				session.removeAttribute("verification");//Çå³şÑéÖ¤Âë
-				Connection connection = JDBCUtil.getConnection();//»ñÈ¡Connection¶ÔÏó
+			if(verification_yanzheng.equals(session.getAttribute("verification"))) {//ç”¨æ¥å¯¹æ¯”sessionä¸­çš„éªŒè¯ç 
+				session.removeAttribute("verification");//ç§»é™¤sessionä¸­çš„éªŒè¯ç 
+				Connection connection = JDBCUtil.getConnection();//è·å–Connectionå¯¹è±¡
 				Statement statement;
 				try {
-					statement = connection.createStatement();//»ñÈ¡Statement¶ÔÏó
+					statement = connection.createStatement();//è·å–statementå¯¹è±¡
 					int index = 0;
 					String sql = Util.isUsername(username, openid)?"update user set email = '"+email+"' where username = '"+username+"';":"update userqq set email = '"+email+"'where openid = '"+openid+"';";
 					index = statement.executeUpdate(sql);
-					if(index == 0) {//¸üĞÂÊ§°Ü
-						out.write("<h2>°ó¶¨ÓÊÏäÊ§°Ü£¬<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>ÖØÊÔ</a></h2>");
+					if(index == 0) {//ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
+						out.write("<h2>é‚®ç®±ç»‘å®šå¤±è´¥ï¼Œ<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>è¯·é‡è¯•</a></h2>");
 					}else {
-						out.write("<h2>°ó¶¨ÓÊÏä³É¹¦£¬¹§Ï²!£¬½øÈë<a href='/SaveData/feedback.jsp?username="+username+"&openid="+openid+"'>·´À¡</a></h2>");
+						out.write("<h2>æ­å–œï¼Œç»‘å®šé‚®ç®±æˆåŠŸï¼<a href='/SaveData/feedback.jsp?username="+username+"&openid="+openid+"'>è¿›å…¥åé¦ˆç•Œé¢ï¼</a></h2>");
 					}
 				}catch (SQLException e) {
-					out.write("<h2>°ó¶¨ÓÊÏäÊ§°Ü£¬Ã¿¸öÓÊÏäÖ»ÄÜ°ó¶¨Ò»¸öÕËºÅ<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>ÖØÊÔ</a></h2>\"</h2>");
+					out.write("<h2>é‚®ç®±ç»‘å®šå¤±è´¥ï¼ŒæœåŠ¡å™¨å‡ºé—®é¢˜äº†ï¼<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>è¯·é‡è¯•</a></h2>\"</h2>");
+				}finally {
+					
 				}
 			}else {
-				session.removeAttribute("verification");//Çå³şÑéÖ¤Âë
-				out.write("<h2>°ó¶¨ÓÊÏäÊ§°Ü£¬<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>ÖØÊÔ</a></h2>");
+				session.removeAttribute("verification");//ç§»é™¤éªŒè¯ç 
+				out.write("<h2>éªŒè¯ç éªŒè¯é”™è¯¯ï¼Œ<a href='/SaveData/youxiang.jsp?username="+username+"&openid="+openid+"'>è¯·é‡è¯•</a></h2>");
 			}
 		}
 		

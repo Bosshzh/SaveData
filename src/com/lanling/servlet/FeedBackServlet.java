@@ -44,7 +44,7 @@ public class FeedBackServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		String email = request.getParameter("email");//ÄÃµ½ÓÊÏäÕËºÅ
+		String email = request.getParameter("email");//ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½
 		String content = request.getParameter("content");
 		Date date = new Date(System.currentTimeMillis());
 		connection = JDBCUtil.getConnection();
@@ -55,16 +55,16 @@ public class FeedBackServlet extends HttpServlet {
 			ps.setDate(3, date);
 			int index = ps.executeUpdate();
 			if(index != 0) {
-				if(SendEmilUtil.sendEmail("1757741394@qq.com","¡¾ÍÁÈÀÊ©·ÊĞÅÏ¢ÊÕ¼¯app¡¿ÓÃ»§·´À¡", "ÓÊÏäÕËºÅÎª£º"+email+"µÄÓÃ»§ÏòÄú·¢À´ÓÃ»§·´À¡£º\n\n¡¾"+content+"¡¿\n\nÇë¼°Ê±»Ø¸´¸ÃÓÃ»§")) {
-					out.write("<h2>·´À¡³É¹¦</h2><br/><h2>½«ÒÔÓÊ¼şĞÎÊ½·¢ËÍ¸ø¿ª·¢ÈËÔ±</h2>");
+				if(SendEmilUtil.sendEmail("1757741394@qq.com","ã€åœŸå£¤æ–½è‚¥ä¿¡æ¯æ”¶é›†appã€‘ç”¨æˆ·åé¦ˆ", "é‚®ç®±è´¦å·ä¸ºï¼š"+email+"çš„ç”¨æˆ·å‘æ‚¨å‘æ¥ç”¨æˆ·åé¦ˆï¼š\n\nã€"+content+"ã€‘\n\nè¯·åŠæ—¶å›å¤è¯¥ç”¨æˆ·")) {
+					out.write("<h2>åé¦ˆæˆåŠŸï¼</h2><br/><h2>å°†ä¼šä»¥é‚®ä»¶çš„å½¢å¼é€šçŸ¥å¼€å‘äººå‘˜</h2>");
 				}else {
 					String username = request.getParameter("username");
 					String openid = request.getParameter("openid");
-					out.write("<h2>·´À¡Ê§°Ü£¬<a href='/SaveData/feedback.jsp?username="+username+"&openid="+openid+"'>ÖØÊÔ</a></h2>");
+					out.write("<h2>åé¦ˆå¤±è´¥ï¼<a href='/SaveData/feedback.jsp?username="+username+"&openid="+openid+"'>è¯·é‡è¯•</a></h2>");
 				}
 			}
 		} catch (SQLException e) {
-			out.write("<h2>·´À¡³öÏÖÁËÎÊÌâ£ºemailÎª£º"+email+"</h2>");
+			out.write("<h2>æœåŠ¡å™¨å‡ºç°é—®é¢˜ï¼</h2>");
 			e.printStackTrace();
 		}
 	}

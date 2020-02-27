@@ -1,8 +1,13 @@
 package com.lanling.servlet;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -52,7 +57,7 @@ public class UploadDataServlet extends HttpServlet {
 			ArrayList<FileItem> fileitems = (ArrayList<FileItem>) upload.parseRequest(request);
 			for(FileItem fileItem : fileitems) {//如果是普通的参数的话
 				if(fileItem.isFormField()) {
-					String sql = fileItem.getString();//拿到值
+					String sql = URLDecoder.decode(fileItem.getString(),"utf-8");//拿到值
 					out.println("sql语句为："+sql);
 					try {
 						index = statement.executeUpdate(sql);//直接执行插入语句
@@ -60,15 +65,17 @@ public class UploadDataServlet extends HttpServlet {
 						out.println("插入sql语句出错  ："+e.getMessage());
 					}
 				}else {//如果是文件
-					String value = fileItem.getName();
-					int start = value.lastIndexOf("/");
-					String filename = value.substring(start+1);
-					File file = new File("/images/uploaddata/"+filename);
-					try {
-						fileItem.write(new File("/usr/images/uploaddata",filename));
-					} catch (Exception e) {
-						out.println("图片名称为："+filename+"图像文件写入磁盘出错  ：  "+e.getMessage());
+					String filename = fileItem.getName();//文件名
+					InputStream is = fileItem.getInputStream();
+					FileOutputStream ous = new FileOutputStream("/usr/images/uploaddata/"+filename);
+					byte[] buff = new byte[1024];
+					int len = 0;
+					while((len = is.read(buff)) > 0) {
+						ous.write(buff, 0, len);
 					}
+					ous.flush();
+					is.close();
+					ous.close();
 				}
 			}
 		} catch (FileUploadException e) {

@@ -89,6 +89,14 @@
     <servlet-name>UploadDataServlet</servlet-name>
     <url-pattern>/uploaddata</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>PhotoServlet</servlet-name>
+    <servlet-class>com.lanling.servlet.PhotoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PhotoServlet</servlet-name>
+    <url-pattern>/photo</url-pattern>
+  </servlet-mapping>
   
   
 </web-app>

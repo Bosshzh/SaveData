@@ -71,13 +71,10 @@ public class GetUploadData {
 				data.setManureNumber_third(rs1.getInt("manurenumberthird"));
 				data.setSpray(rs1.getString("spray"));
 				data.setWeed(rs1.getString("weed"));
-//				statement2 = connection.createStatement();
-//				rs2 = statement2.executeQuery("select * from images where id = '"+rs1.getString("id")+"';");
-//				if(rs2.next()) {
-//					data.setLand_image1(rs2.getBlob("landimage1"));
-//					data.setLand_image2(rs2.getBlob("landimage2"));
-//					data.setInterview_image(rs2.getBlob("interview"));
-//				}
+				data.setDate(rs1.getDate("upload_time"));
+				data.setLand_image1(rs1.getString("landimage1"));
+				data.setLand_image2(rs1.getString("landimage2"));
+				data.setInterview_image(rs1.getString("interviewimage"));
 				lists.add(data);
 			}
 		}catch(SQLException e){

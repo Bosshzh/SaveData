@@ -47,6 +47,7 @@
 				<thead>
 					<tr>
 						<th>次数</th>
+						<th>上传时间</th>
 						<th>地理位置</th>
 						<th>省级</th>
 						<th>市级</th>
@@ -90,11 +91,12 @@
 				<tbody>
 				
 					<%
-						int i=0;
+						int i=1;
 						for(UploadData uploadData:lists){
 					%>		
 							<tr>
-								<td><strong>第<%=(i+1) %>次上传</strong></td>
+								<td><strong>第<%=(i++) %>次上传</strong></td>
+								<td><%=uploadData.getDate() %></td>
 								<td><%=uploadData.getLocation() %></td>
 								<td><%=uploadData.getProvince() %></td>
 								<td><%=uploadData.getCity() %></td>
@@ -130,9 +132,9 @@
 								<td><%=uploadData.getManureNumber_third() %></td>
 								<td><%=uploadData.getSpray() %></td>
 								<td><%=uploadData.getWeed() %></td>
-								<td><img src="showImage.jsp?type=1&index=<%=i %>"></td>
-								<td><img src="showImage.jsp?type=2&index=<%=i %>"></td>
-								<td><img src="showImage.jsp?type=3&index=<%=i++ %>"></td>
+								<td><img src="<%=uploadData.getLand_Iamge1_String() %>"></td>
+								<td><img src="<%=uploadData.getLand_Iamge1_String() %>"></td>
+								<td><img src="<%=uploadData.getLand_Iamge1_String() %>"></td>
 								<!--  width="350px" height="350px"  -->
 							</tr>
 					<%	
