@@ -18,6 +18,7 @@ import com.lanling.util.JDBCUtil;
 import com.lanling.util.Util;
 
 public class BangDingServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
        
     public BangDingServlet() {
